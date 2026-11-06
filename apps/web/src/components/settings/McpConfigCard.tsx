@@ -23,7 +23,7 @@ import {
   copyTextToClipboard,
   createDefaultTokenName,
   DEFAULT_TOKEN_ACCESS_LEVEL,
-  getMcpRemoteServerUrl,
+  getEdgeEverBaseUrl,
   getStoredTokenAccessLevel,
   getTokenScopesForAccessLevel,
   getTokenScopeLabel,
@@ -32,13 +32,13 @@ import {
 
 const McpExampleDialog = () => {
   const { t } = useTranslation();
-  const serverUrl = getMcpRemoteServerUrl();
+  const baseUrl = getEdgeEverBaseUrl();
   const [copied, setCopied] = useState(false);
   const remoteExample = JSON.stringify(
     {
       mcpServers: {
         edgeever: {
-          url: serverUrl,
+          url: `${baseUrl}/mcp`,
           headers: {
             Authorization: t("mcp.bearerPlaceholder"),
           },

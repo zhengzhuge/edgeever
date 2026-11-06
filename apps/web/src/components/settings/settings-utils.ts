@@ -1,5 +1,4 @@
 import type { TFunction } from "i18next";
-import { getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 export { copyTextToClipboard } from "@/lib/clipboard";
 
 export const ALL_TOKEN_SCOPES = [
@@ -88,25 +87,21 @@ export const getStoredTokenAccessLevel = (
 
 export const getTokenScopeLabel = (scope: string, t: TFunction) => t(`mcp.scopes.${scope}`, { defaultValue: scope });
 
-export const EDGE_EVER_SERVER_URL_PLACEHOLDER = "https://your-edgeever-server";
-
-// MCP clients connect to the EdgeEver server, not to the page that shows the
-// settings. In the browser that is the page origin; the desktop renderer runs
-// on its own app origin (`edgeever-app://app`), so it uses the configured
-// instance URL and shows a placeholder until one is set.
-export const getEdgeEverBaseUrl = () => {
+export const getMcpRemoteServerUrl = () => {
   if (typeof window === "undefined") {
-    return EDGE_EVER_SERVER_URL_PLACEHOLDER;
+    return "/mcp";
   }
 
-  if (window.edgeeverDesktop?.isAvailable) {
-    return getConfiguredDesktopApiBaseUrl().replace(/\/+$/, "") || EDGE_EVER_SERVER_URL_PLACEHOLDER;
+  return `${window.location.origin}/mcp`;
+};
+
+export const getEdgeEverBaseUrl = () => {
+  if (typeof window === "undefined") {
+    return "https://your-domain.example";
   }
 
   return window.location.origin;
 };
-
-export const getMcpRemoteServerUrl = () => `${getEdgeEverBaseUrl()}/mcp`;
 
 export const buildMcpRemoteConfig = (token: string) =>
   JSON.stringify(
